@@ -1,0 +1,86 @@
+body {
+	background-color: rgb(150,150,150);
+}
+
+h1, h2 {
+	text-align: center;
+}
+
+#carousel {
+	position: relative;
+	margin: auto;
+	width: 60vw;
+	height: 445px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.filter {
+	transition: 0.4s;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 10%;
+	height: 100%;
+}
+
+.filter-left {
+	/*background: linear-gradient(to right, rgba(0,0,0,1), rgba(0,0,0,0));*/
+}
+
+.filter-right {
+	/*background: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,1));*/
+}
+
+#carousel span {
+	display: block;
+	color: white;
+	font-size: 5em;
+	opacity: 0.3;
+	transition: 0.4s;
+}
+
+#carousel .filter:hover {
+	opacity: 0.8;
+}
+
+#carousel .filter:hover span {
+	opacity: 1;
+}
+
+/* images */
+#carousel img {
+	z-index: -1;
+	position: absolute;
+	height: 100%;
+	top: 0;
+	left: 50%;
+	transform: translate(-50%,0);
+}
+
+/* lands */
+#lands {
+	margin-top: 20px;
+	display: flex;
+	justify-content: space-around;
+}
+
+.land {
+	width: 100px;
+	height: 100px;
+}
+
+.land_off {
+	filter: grayscale(100%);
+}
+
+.land_on {
+	border-radius: 50%;
+	border: 2px solid black;
+}
+
+/* formate choices */
+.choose-set {
+	text-align: center;
+}
