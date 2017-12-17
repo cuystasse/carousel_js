@@ -1,4 +1,7 @@
 body {
+	max-width: 700px;
+	margin: auto;
+	transition: background 0.5s;
 	background-color: rgb(150,150,150);
 }
 
@@ -6,10 +9,20 @@ h1, h2 {
 	text-align: center;
 }
 
+.subtitle {
+	font-size: 1.5em;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.subtitle > span {
+	font-size: 2em;
+}
+
 #carousel {
 	position: relative;
 	margin: auto;
-	width: 60vw;
 	height: 445px;
 	display: flex;
 	justify-content: space-between;
@@ -35,7 +48,6 @@ h1, h2 {
 
 #carousel span {
 	display: block;
-	color: white;
 	font-size: 5em;
 	opacity: 0.3;
 	transition: 0.4s;

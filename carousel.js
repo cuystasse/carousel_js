@@ -7,7 +7,7 @@ $(document).ready( function() {
 	// 	$(this).prepend($('<span></span>').addClass("ss ss-" + code));
 	// })
 
-	// ajax requesting api mtg
+	// Request to update current set/land-type 
 	function updateImages() {
 		land = $('.land_on').data('land');
 		set_code = $('select').val().toLowerCase();
@@ -18,9 +18,13 @@ $(document).ready( function() {
 
 			success : function(response, statut) {
 				count_lands = response.cards.length;
-				$('#carousel').data('max', count_lands-1);
-				$('#carousel').data('current', 0);
-				loadImage($('#carousel').data('current'), $('#carousel img'), 0);
+				if (count_lands > 0) {
+					$('#carousel').data('max', count_lands-1);
+					$('#carousel').data('current', 0);
+					loadImage(0, $('#carousel .response_area'), 0);
+				} else {
+					$('#carousel .response_area').text('Ooops no land here...');
+				}
 			}
 		});
 	}
@@ -29,6 +33,11 @@ $(document).ready( function() {
 	$('.land').on('click', function() {
 		$('.land').addClass('land_off').removeClass('land_on');
 		$(this).removeClass('land_off').addClass('land_on');
+
+		// set body bg to land color
+		console.log($(this).find('svg').children().attr('fill'));
+		$('body').css('background-color', $(this).find('svg').children().attr('fill'));
+
 		updateImages();
 	});
 
@@ -39,14 +48,16 @@ $(document).ready( function() {
 		name = $('select option:selected').text();
 		code = $(this).val().toLowerCase();
 	 	icon = $('<i></i>').addClass("ss ss-" + code);
-		$('#active-set-h2 span').text(name);
-		$('#active-set-h2 span').prepend(icon);
+		$('#active-set-h2').text(name);
+		$('.subtitle span:first').text('').append(icon);
+		$('.subtitle span:last').text('').append(icon.clone());
+
 		updateImages();
 	});
 
 	$('select option:first').trigger('change');
 
-	function loadImage(current, target, time_delay=300) {
+	function loadImage(current, target, time_delay=250) {
 		land = $('.land_on').data('land');
 		set_code = $('select').val().toLowerCase();
 		$.ajax({
@@ -56,40 +67,49 @@ $(document).ready( function() {
 
 			success : function(response, statut) {
 				lands = response.cards;
-				target.fadeOut(time_delay)
-				  .delay(time_delay)
-				  .queue(function(next) {
-				  			target.attr('src', lands[current].imageUrl)
-				  		          .attr('alt', lands[current].set + ' ' + lands[current].name);
+				if (lands.length < 1) {
+					target.fadeOut(time_delay)
+						.queue(function(next) {
+				  			target.text('Ooops no land here...');
 				  		    next();
-				  })
-				  .delay(time_delay)
-				  .fadeIn(time_delay);
+				  		})
+						.fadeIn(time_delay);
+				} else {
+					target.fadeOut(time_delay)
+					  .delay(time_delay)
+					  .queue(function(next) {
+					  			target.text('');
+					  			new_elm = $('<img>').attr('src', lands[current].imageUrl)
+					  		    					.attr('alt', lands[current].set + ' ' + lands[current].name);
+					  			target.append(new_elm);
+					  		    next();
+					  })
+					  .delay(time_delay)
+					  .fadeIn(time_delay);
+				}
 			}
 		});
 	}
 
-
-	// first load
-	loadImage($('#carousel').data('current'), $('#carousel img'), 0);
-
+	// Carousel left/right arrow events
 	$('.filter-left').on('click', function(e) {
 		current = $('#carousel').data('current');
 		current = (current == 0) ? $('#carousel').data('max') : current - 1;
-		loadImage(current, $('#carousel img'));
+		loadImage(current, $('#carousel .response_area'));
 		$('#carousel').data('current', current);
 	});
 
 	$('.filter-right').on('click', function(e) {
 		current = $('#carousel').data('current');
 		current = (current == $('#carousel').data('max')) ? 0 : current + 1;
-		loadImage(current, $('#carousel img'));
+		loadImage(current, $('#carousel .response_area'));
 		$('#carousel').data('current', current);
 	});
 
-	setInterval(function() {
-		$('.filter-right').trigger('click');
-	}, 3000);
+	// Autochanging carousel every 3sec
+	//setInterval(function() {
+	//	$('.filter-right').trigger('click');
+	//}, 3000);
 
 
 
