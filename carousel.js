@@ -107,9 +107,9 @@ $(document).ready( function() {
 	});
 
 	// Autochanging carousel every 3sec
-	//setInterval(function() {
-	//	$('.filter-right').trigger('click');
-	//}, 3000);
+	setInterval(function() {
+		$('.filter-right').trigger('click');
+	}, 3000);
 
 
 
